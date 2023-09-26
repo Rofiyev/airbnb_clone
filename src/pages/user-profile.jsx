@@ -13,8 +13,6 @@ import { useSelector } from "react-redux";
 import { DateCalendar } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 
-
-
 const UserProfile = () => {
   const auth = useSelector(({ authSlice }) => authSlice.user);
   console.log(auth);
