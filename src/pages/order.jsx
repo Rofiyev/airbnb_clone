@@ -21,6 +21,7 @@ import { differenceInDays } from "date-fns";
 import LazyLoad from "react-lazy-load";
 import { RiMedalFill, RiStarSFill } from "react-icons/ri";
 import { HiArrowSmLeft } from "react-icons/hi";
+import { toast } from "react-toastify";
 
 const OrderPage = () => {
   const { slug, checkin, checkout, numberOfGuests } = useParams();
@@ -53,6 +54,7 @@ const OrderPage = () => {
 
   const submitPayment = (data) => {
     console.log(data);
+    toast.success("A message has been sent");
     reset();
   };
 

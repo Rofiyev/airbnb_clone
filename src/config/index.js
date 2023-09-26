@@ -2,7 +2,11 @@ import { RiUserSettingsLine } from "react-icons/ri";
 import { IoExitOutline } from "react-icons/io5";
 
 export const settings = [
-  { name: "Profile", icon: <RiUserSettingsLine fontSize={"20px"} /> },
+  {
+    name: "Profile",
+    icon: <RiUserSettingsLine fontSize={"20px"} />,
+    route: "/user-profile",
+  },
   { name: "Logout", icon: <IoExitOutline fontSize={"20px"} /> },
 ];
 

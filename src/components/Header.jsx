@@ -18,7 +18,7 @@ import {
 import { countries, settings } from "../config";
 import logo from "../assets/logo.png";
 import LazyLoad from "react-lazy-load";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ModalContent from "./Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { removeUser, setUser } from "../redux/auth-slice";
@@ -30,6 +30,8 @@ import { getItem } from "../helpers/persistance-storage";
 function Header({ children }) {
   const auth = useSelector(({ authSlice }) => authSlice.user);
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -56,11 +58,11 @@ function Header({ children }) {
   const handlerChange = (e) => setPhone(`${e.target.value}`);
 
   const handleOpenUserMenu = (event) => setAnchorElUser(event.currentTarget);
-  const handleCloseUserMenu = (e) => {
+  const handleCloseUserMenu = (route, name) => {
     setAnchorElUser(null);
-    if (e.target.textContent === "Logout") {
-      dispatch(removeUser());
-    }
+    if (name === "Logout") dispatch(removeUser());
+
+    route && navigate(route);
   };
 
   // Handle Change Modal Open and Close
@@ -236,11 +238,11 @@ function Header({ children }) {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
-                  {settings.map(({ icon, name }) => (
+                  {settings.map(({ icon, name, route }) => (
                     <MenuItem
                       key={name}
                       sx={{ display: "flex", gap: "10px" }}
-                      onClick={handleCloseUserMenu}
+                      onClick={() => handleCloseUserMenu(route, name)}
                     >
                       {icon}
                       <Typography>{name}</Typography>
