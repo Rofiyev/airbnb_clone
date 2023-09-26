@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import {
   Box,
   Card,
@@ -9,6 +10,9 @@ import {
   IconButton,
   Stack,
   Typography,
+  TextField,
+  MenuItem,
+  FormControl,
   Button,
 } from "@mui/material";
 import { Footer, Header } from "../components";
@@ -19,14 +23,18 @@ import LazyLoad from "react-lazy-load";
 import { RiMedalFill, RiStarSFill } from "react-icons/ri";
 import { HiArrowSmLeft } from "react-icons/hi";
 
-import { usePaymentInputs } from "react-payment-inputs";
-import images from "react-payment-inputs/images";
-
 const OrderPage = () => {
   const { slug, checkin, checkout, numberOfGuests } = useParams();
   const [item, setItem] = useState("");
   const [count, setCount] = useState(1);
   const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    setValue,
+  } = useForm();
 
   useEffect(() => {
     const getData = async () => {
@@ -45,9 +53,38 @@ const OrderPage = () => {
     getData();
   }, [slug]);
 
-  const { meta, getCardNumberProps, getExpiryDateProps, getCVCProps } =
-    usePaymentInputs();
-  const { erroredInputs, touchedInputs } = meta;
+  const submitPayment = (data) => {
+    console.log(data);
+    reset();
+  };
+
+  const handleCardNumberChange = (e) => {
+    const value = e.target.value
+      .replace(/\s/g, "")
+      .match(/\d{1,4}/g)
+      ?.join(" ");
+    e.target.value = value ? value.substr(0, 19) : "";
+  };
+
+  const handleCardExpirationChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "expiration") {
+      const inputValue = value.replace(/\D/g, "");
+      const month = inputValue.slice(0, 2);
+      const year = inputValue.slice(2, 4);
+
+      let formattedValue = "";
+
+      if (month) formattedValue += month;
+      if (year) formattedValue += `/${year}`;
+
+      if (formattedValue.length > 5)
+        formattedValue = formattedValue.slice(0, 4);
+
+      e.target.value = formattedValue;
+    }
+  };
 
   return (
     <>
@@ -108,12 +145,190 @@ const OrderPage = () => {
               </Box>
             </Stack>
             <Divider sx={{ my: "40px" }} />
-            <Typography variant="h4" fontFamily={"inherit"} fontWeight={"500"}>
+            <Typography
+              variant="h4"
+              fontFamily={"inherit"}
+              fontWeight={"500"}
+              sx={{ mb: "12px" }}
+            >
               Choose how to pay
             </Typography>
-            <Box mt={"30px"} width={"100%"}>
-            
-            </Box>
+
+            <FormControl
+              component="form"
+              onSubmit={handleSubmit(submitPayment)}
+              fullWidth
+              sx={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "start",
+                gap: "12px",
+              }}
+            >
+              <Box
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "8px",
+                }}
+              >
+                <TextField
+                  sx={{ width: "100%" }}
+                  label="Card number"
+                  name="cardNumber"
+                  placeholder="0000 0000 0000 0000"
+                  variant="outlined"
+                  {...register("cardNumber", {
+                    required: true,
+                    pattern: /^(?:\d{4}\s?){4}$/,
+                  })}
+                  error={errors.cardNumber !== undefined}
+                  helperText={
+                    errors.cardNumber && "Please match the required format"
+                  }
+                  onChange={handleCardNumberChange}
+                />
+                <Box sx={{ width: "100%", display: "flex" }}>
+                  <TextField
+                    sx={{ width: "100%" }}
+                    label="Expiration"
+                    name="expiration"
+                    {...register("expiration", {
+                      required: true,
+                      maxLength: 5,
+                      minLength: 4,
+                      pattern: /^\d{2}\/\d{0,2}$/,
+                    })}
+                    error={errors.expiration}
+                    InputProps={{
+                      sx: {
+                        borderTopRightRadius: "0px",
+                        borderBottomRightRadius: "0px",
+                      },
+                    }}
+                    helperText={
+                      errors.expiration && "Please match the required format"
+                    }
+                    placeholder="MM/YY"
+                    onChange={handleCardExpirationChange}
+                  />
+                  <TextField
+                    sx={{ width: "100%" }}
+                    label="CVV"
+                    name="cvv"
+                    type="number"
+                    {...register("cvv", {
+                      required: true,
+                      maxLength: 4,
+                      minLength: 3,
+                    })}
+                    error={errors.cvv}
+                    InputProps={{
+                      sx: {
+                        borderTopLeftRadius: "0px",
+                        borderBottomLeftRadius: "0px",
+                      },
+                    }}
+                    helperText={
+                      errors.cvv && "Please match the required format"
+                    }
+                    placeholder="123"
+                  />
+                </Box>
+                {errors.cardNumber || errors.expiration || errors.cvv ? (
+                  <Typography
+                    component="div"
+                    sx={{ color: "#f44", fontSize: "14px" }}
+                  >
+                    Check your card number
+                  </Typography>
+                ) : (
+                  ""
+                )}
+              </Box>
+              <Box
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "8px",
+                }}
+              >
+                <Typography component="h6" variant="h6">
+                  Billing address
+                </Typography>
+                <TextField
+                  sx={{ width: "100%" }}
+                  label="Street address"
+                  {...register("streetAddress", { required: "Required" })}
+                  error={errors.streetAddress}
+                />
+                <TextField
+                  sx={{ width: "100%" }}
+                  label="Apt or suite number"
+                  {...register("aptOrSuiteNumber")}
+                />
+                <TextField
+                  sx={{ width: "100%" }}
+                  label="City"
+                  {...register("city", { required: "Required" })}
+                  error={errors.city}
+                />
+                <Box sx={{ width: "100%", display: "flex" }}>
+                  <TextField
+                    sx={{ width: "100%" }}
+                    label="State"
+                    id="outlined-start-adornment"
+                    InputProps={{
+                      sx: {
+                        borderTopRightRadius: "0px",
+                        borderBottomRightRadius: "0px",
+                      },
+                    }}
+                    {...register("state")}
+                  />
+                  <TextField
+                    sx={{ width: "100%" }}
+                    label="ZIP code"
+                    id="outlined-start-adornment"
+                    InputProps={{
+                      sx: {
+                        borderTopLeftRadius: "0px",
+                        borderBottomLeftRadius: "0px",
+                      },
+                    }}
+                    {...register("zipCode", { required: "Required" })}
+                    error={errors.zipCode}
+                  />
+                </Box>
+                {errors.streetAddress || errors.city || errors.zipCode ? (
+                  <Typography
+                    component="div"
+                    sx={{ color: "#f44", fontSize: "14px" }}
+                  >
+                    This is required
+                  </Typography>
+                ) : (
+                  ""
+                )}
+              </Box>
+              <Button
+                variant="contained"
+                color="error"
+                type="submit"
+                sx={{
+                  display: "flex",
+                  minWidth: "25%",
+                  fontWeight: "semibold",
+                  alignSelf: "flex-end",
+                }}
+                size="large"
+              >
+                Pay
+              </Button>
+            </FormControl>
           </Grid>
           <Grid item xs={12} md={5} px={{ xs: "0rem", md: "2rem" }}>
             <Card
