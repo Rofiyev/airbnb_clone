@@ -1,14 +1,10 @@
-import * as React from "react";
-import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
 import { Facebook, Instagram, Twitter } from "@mui/icons-material";
-import { Box } from "@mui/material";
+import { Box, Container, Grid, Link, Typography } from "@mui/material";
 
 export default function Footer() {
   return (
     <Box
-    maxWidth="full"
+      maxWidth="full"
       component="footer"
       sx={{
         backgroundColor: (theme) =>
@@ -18,6 +14,7 @@ export default function Footer() {
         p: 6,
       }}
     >
+      <Container maxWidth={"xl"}>
         <Grid container spacing={5}>
           <Grid item xs={12} sm={4}>
             <Typography variant="h6" color="text.primary" gutterBottom>
@@ -71,6 +68,7 @@ export default function Footer() {
             {"."}
           </Typography>
         </Box>
+      </Container>
     </Box>
   );
 }
