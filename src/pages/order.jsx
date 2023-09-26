@@ -11,7 +11,6 @@ import {
   Stack,
   Typography,
   TextField,
-  MenuItem,
   FormControl,
   Button,
 } from "@mui/material";
@@ -33,7 +32,6 @@ const OrderPage = () => {
     handleSubmit,
     formState: { errors },
     reset,
-    setValue,
   } = useForm();
 
   useEffect(() => {
@@ -84,6 +82,14 @@ const OrderPage = () => {
 
       e.target.value = formattedValue;
     }
+  };
+
+  const handleCVVChange = (event) => {
+    let { value } = event.target;
+    value = value.replace(/\s/g, "");
+
+    if (!/^\d{1,5}$/.test(value)) value = value.slice(0, 4);
+    event.target.value = value;
   };
 
   return (
@@ -234,19 +240,10 @@ const OrderPage = () => {
                     helperText={
                       errors.cvv && "Please match the required format"
                     }
+                    onChange={handleCVVChange}
                     placeholder="123"
                   />
                 </Box>
-                {errors.cardNumber || errors.expiration || errors.cvv ? (
-                  <Typography
-                    component="div"
-                    sx={{ color: "#f44", fontSize: "14px" }}
-                  >
-                    Check your card number
-                  </Typography>
-                ) : (
-                  ""
-                )}
               </Box>
               <Box
                 sx={{
@@ -323,10 +320,11 @@ const OrderPage = () => {
                   minWidth: "25%",
                   fontWeight: "semibold",
                   alignSelf: "flex-end",
+                  textTransform: "inherit",
                 }}
                 size="large"
               >
-                Pay
+                Confirm and pay
               </Button>
             </FormControl>
           </Grid>
