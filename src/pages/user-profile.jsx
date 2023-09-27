@@ -9,14 +9,21 @@ import {
   Typography,
 } from "@mui/material";
 import { Footer, Header } from "../components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DateCalendar } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { DataFetching } from "../api";
+import { useNavigate } from "react-router-dom";
+import { setUser } from "../redux/auth-slice";
+import { toast } from "react-toastify";
 
 const UserProfile = () => {
   const auth = useSelector(({ authSlice }) => authSlice.user);
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const [date, setDate] = useState(dayjs(getDayFunc(auth?.user?.birth_date)));
 
@@ -33,21 +40,25 @@ const UserProfile = () => {
 
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = (data) => {
-    console.log({ ...data, date });
+  const onSubmit = async (formData) => {
+    const body = {
+      ...formData,
+      birth_date: `${date?.$y}-${+date?.$M + 1}-${date?.$D}`,
+    };
+    const { data, success } = await DataFetching.changeUserData(
+      body,
+      auth.access
+    );
+    if (success) {
+      dispatch(
+        setUser({ access: auth.access, refresh: auth.refresh, user: data })
+      );
+      navigate("/");
+      toast.success("User information has been changed successfully");
+    }
   };
 
-  console.log(date);
-
-  const formatDate = (date) => {
-    if (!date) return "";
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}/${month}/${day}`;
-  };
-
-  const handleDateChange = (date) => setDate(date);
+  const handleDateChange = (date) => setDate(dayjs(getDayFunc(date)));
 
   return (
     <>
@@ -159,10 +170,7 @@ const UserProfile = () => {
                   <DateCalendar
                     views={["year", "month", "day"]}
                     value={date}
-                    inputFormat="YYYY/MM/DD"
                     onChange={handleDateChange}
-                    renderInput={(params) => <input {...params} />}
-                    renderValue={(date) => formatDate(date)}
                   />
                 </Grid>
                 <Grid

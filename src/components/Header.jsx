@@ -31,6 +31,8 @@ function Header({ children }) {
   const auth = useSelector(({ authSlice }) => authSlice.user);
   const dispatch = useDispatch();
 
+  console.log(auth);
+
   const navigate = useNavigate();
 
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -60,7 +62,10 @@ function Header({ children }) {
   const handleOpenUserMenu = (event) => setAnchorElUser(event.currentTarget);
   const handleCloseUserMenu = (route, name) => {
     setAnchorElUser(null);
-    if (name === "Logout") dispatch(removeUser());
+    if (name === "Logout") {
+      dispatch(removeUser());
+      navigate("/");
+    }
 
     route && navigate(route);
   };
@@ -211,7 +216,7 @@ function Header({ children }) {
                       cursor: "pointer",
                     }}
                   >
-                    {auth.user.first_name} {auth.user.last_name.charAt(0)}.
+                    {auth?.user?.first_name} {auth?.user?.last_name?.charAt(0)}.
                   </Typography>
                   <IconButton
                     sx={{ cursor: "pointer", p: 0.5 }}

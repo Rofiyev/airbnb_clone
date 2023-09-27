@@ -55,6 +55,7 @@ const OrderPage = () => {
   const submitPayment = (data) => {
     console.log(data);
     toast.success("A message has been sent");
+    navigate("/");
     reset();
   };
 
@@ -100,7 +101,7 @@ const OrderPage = () => {
       <Container maxWidth={"xl"} sx={{ minHeight: "100vh", py: "3rem" }}>
         <Stack direction={"row"} gap={"1rem"} alignItems={"center"}>
           <IconButton
-            onClick={() => navigate(item?.slug)}
+            onClick={() => navigate(`/${slug.split("=")[1]}`)}
             aria-label="Prev page"
             size="large"
           >

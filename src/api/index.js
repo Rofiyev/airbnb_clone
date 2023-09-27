@@ -94,4 +94,21 @@ export const DataFetching = {
       return { data: error.response.data.detail, success: false };
     }
   },
+
+  async changeUserData(body, token) {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    try {
+      const { data } = await axios.put(
+        `${BASE_URL}/users/profile/`,
+        body,
+        config
+      );
+      return { data, success: true };
+    } catch (error) {
+      console.log(error);
+      return { data: error.response.data.detail, success: false };
+    }
+  },
 };

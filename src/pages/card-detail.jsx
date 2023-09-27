@@ -80,30 +80,39 @@ export default function CardDetailPage() {
         const body = {
           date_in,
           date_out,
-          guests: +guestCount,
+          guests: parseInt(guestCount),
           total_price: 0,
           room: item.id,
           user: {
-            first_name: '',
-            last_name: '',
-            phone_number: '+998913973081',
-            email: "",
-            birth_date: ""
-          }
-        }
-        const { data, success } = await DataFetching.bookingRoom(body, auth.access);
+            first_name: auth.first_name,
+            last_name: auth.last_name,
+            phone_number: auth.phone_number,
+            email: auth.email,
+            birth_date: auth.birth_date,
+          },
+        };
+        const { data, success } = await DataFetching.bookingRoom(
+          body,
+          auth.access
+        );
         if (success) {
-          navigate(`/order/roomId=${id}/checkin=${date_in}/checkout=${date_out}/numberOfGuests=${+guestCount}`);
+          navigate(
+            `/order/roomId=${id}/checkin=${date_in}/checkout=${date_out}/numberOfGuests=${+guestCount}`
+          );
         } else {
           toast.error(data, { position: toast.POSITION.TOP_RIGHT });
           return;
         }
       } else {
-        toast.error('Data entry is required!', { position: toast.POSITION.TOP_RIGHT });
+        toast.error("Data entry is required!", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
         return;
       }
     } else {
-      toast.error('You must register first!', { position: toast.POSITION.TOP_RIGHT });
+      toast.error("You must register first!", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
       return;
     }
   };
