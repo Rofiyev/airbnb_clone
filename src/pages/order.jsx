@@ -104,9 +104,16 @@ const OrderPage = () => {
             aria-label="Prev page"
             size="large"
           >
-            <HiArrowSmLeft style={{ fontSize: "3rem", color: "black" }} />
+            <HiArrowSmLeft
+              style={{ fontSize: { xs: "1.2rem", md: "3rem" }, color: "black" }}
+            />
           </IconButton>
-          <Typography variant="h3" fontFamily={"inherit"} fontWeight={500}>
+          <Typography
+            variant="h3"
+            fontSize={{ xs: "1rem", md: "2rem" }}
+            fontFamily={"inherit"}
+            fontWeight={500}
+          >
             Request to book
           </Typography>
         </Stack>

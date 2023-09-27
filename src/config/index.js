@@ -7,7 +7,10 @@ export const settings = [
     icon: <RiUserSettingsLine fontSize={"20px"} />,
     route: "/user-profile",
   },
-  { name: "Logout", icon: <IoExitOutline fontSize={"20px"} /> },
+  {
+    name: "Logout",
+    icon: <IoExitOutline fontSize={"20px"} />,
+  },
 ];
 
 export const countries = [

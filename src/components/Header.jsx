@@ -59,14 +59,16 @@ function Header({ children }) {
 
   const handleOpenUserMenu = (event) => setAnchorElUser(event.currentTarget);
   const handleCloseUserMenu = (route, name) => {
-    setAnchorElUser(null);
     if (name === "Logout") {
       dispatch(removeUser());
       navigate("/");
     }
 
     route && navigate(route);
+    setAnchorElUser(null);
   };
+
+  const handleClose = () => setAnchorElUser(null);
 
   // Handle Change Modal Open and Close
   const handleModal = (bool) => setIsOpenModal(bool);
@@ -162,12 +164,7 @@ function Header({ children }) {
       }}
       elevation={0}
     >
-      <Container
-        maxWidth="xl"
-        display={"flex"}
-        alignItems={"center"}
-        height={"100%"}
-      >
+      <Container maxWidth="xl" height={"100%"}>
         <Toolbar
           disableGutters
           sx={{
@@ -204,7 +201,7 @@ function Header({ children }) {
           <>{children}</>
           <Box>
             {auth ? (
-              <>
+              <Box>
                 <Stack direction={"row"} alignItems={"center"} gap={"10px"}>
                   <Typography
                     variant="h6"
@@ -227,6 +224,7 @@ function Header({ children }) {
                   </IconButton>
                 </Stack>
                 <Menu
+                  id="menu-appbar"
                   sx={{ mt: "45px", width: 350 }}
                   anchorEl={anchorElUser}
                   anchorOrigin={{
@@ -239,7 +237,7 @@ function Header({ children }) {
                     horizontal: "right",
                   }}
                   open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
+                  onClose={handleClose}
                 >
                   {settings.map(({ icon, name, route }) => (
                     <MenuItem
@@ -252,7 +250,7 @@ function Header({ children }) {
                     </MenuItem>
                   ))}
                 </Menu>
-              </>
+              </Box>
             ) : (
               <Button
                 variant="outlined"
@@ -326,10 +324,7 @@ function Header({ children }) {
                   value={`${country.label} (+${country.code})`}
                   {...params}
                   label="Country/Region"
-                  inputProps={{
-                    ...params.inputProps,
-                    // autoComplete: "new-password", // disable autocomplete and autofill
-                  }}
+                  inputProps={{ ...params.inputProps }}
                 />
               )}
             />
@@ -467,10 +462,7 @@ function Header({ children }) {
                   value={`${country.label} (+${country.code})`}
                   {...params}
                   label="Country/Region"
-                  inputProps={{
-                    ...params.inputProps,
-                    autoComplete: "new-password", // disable autocomplete and autofill
-                  }}
+                  inputProps={{ ...params.inputProps }}
                 />
               )}
             />

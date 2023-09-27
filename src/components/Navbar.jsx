@@ -8,7 +8,7 @@ export default function Navbar({ categories }) {
       gap={4}
       sx={{
         position: "sticky",
-        top: "11vh",
+        top: "64px",
         zIndex: "99",
         pt: "25px",
         pb: "10px",
@@ -54,7 +54,7 @@ export default function Navbar({ categories }) {
               fontFamily: "inherit",
               textAlign: "center",
               fontSize: "14px",
-              lineHeight: '16px'
+              lineHeight: "16px",
             }}
           >
             {item.name}
