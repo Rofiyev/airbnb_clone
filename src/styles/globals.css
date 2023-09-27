@@ -47,3 +47,26 @@
   transition: all 0.2s ease-in-out;
   cursor: pointer;
 }
+
+.fileContainer {
+  width: 150px !important;
+  height: 150px !important;
+  border-radius: 50% !important;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2) !important;
+  position: absolute;
+  top: 0%;
+  left: 0%;
+}
+
+.remove-picture-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 25px;
+  color: crimson;
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 50%;
+  padding: 2px;
+  cursor: pointer;
+}
