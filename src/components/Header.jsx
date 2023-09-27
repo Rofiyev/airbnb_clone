@@ -31,8 +31,6 @@ function Header({ children }) {
   const auth = useSelector(({ authSlice }) => authSlice.user);
   const dispatch = useDispatch();
 
-  console.log(auth);
-
   const navigate = useNavigate();
 
   const [anchorElUser, setAnchorElUser] = useState(null);

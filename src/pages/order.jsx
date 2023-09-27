@@ -53,7 +53,6 @@ const OrderPage = () => {
   }, [slug]);
 
   const submitPayment = (data) => {
-    console.log(data);
     toast.success("A message has been sent");
     navigate("/");
     reset();
