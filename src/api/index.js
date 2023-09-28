@@ -111,4 +111,20 @@ export const DataFetching = {
       return { data: error.response.data.detail, success: false };
     }
   },
+
+  async getUserBookingList(token) {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    try {
+      const { data } = await axios.get(
+        `${BASE_URL}/bookings/user-booking-list`,
+        config
+      );
+      return { data, success: true };
+    } catch (error) {
+      console.log(error);
+      return { data: error.response.data.detail, success: false };
+    }
+  },
 };

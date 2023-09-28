@@ -1,11 +1,17 @@
 import { RiUserSettingsLine } from "react-icons/ri";
 import { IoExitOutline } from "react-icons/io5";
+import { BsListStars } from "react-icons/bs";
 
 export const settings = [
   {
     name: "Profile",
     icon: <RiUserSettingsLine fontSize={"20px"} />,
     route: "/user-profile",
+  },
+  {
+    name: "My orders",
+    icon: <BsListStars fontSize={"20px"} />,
+    route: "/user-orders",
   },
   {
     name: "Logout",

@@ -4,6 +4,7 @@ import {
   HomePage,
   NotFound,
   OrderPage,
+  UserOrders,
   UserProfile,
 } from "./pages";
 
@@ -17,6 +18,7 @@ function App() {
         path="/order/:slug/:checkin/:checkout/:numberOfGuests"
         element={<OrderPage />}
       />
+      <Route path="/user-orders" element={<UserOrders />} />
       <Route path="/not-found" element={<NotFound />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
