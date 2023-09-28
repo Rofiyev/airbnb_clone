@@ -96,32 +96,30 @@ export default function UserOrders() {
               Your orders
             </Typography>
             <Stack
-              direction={{ xs: "column", md: "row" }}
-              alignItems={"center"}
+              direction={{ xs: "column-reverse", md: "row" }}
+              alignItems={{ xs: "flex-start", md: "center" }}
               justifyContent={"space-between"}
               gap={"0.5rem"}
-              mt={"1rem"}
+              my={"1rem"}
             >
               <TextField
                 label="Search"
                 size="small"
                 onChange={(e) => setSearchValue(e.target.value.trim())}
-                sx={{ maxWidth: "500px", mb: "1.5rem" }}
+                sx={{ maxWidth: "500px" }}
               />
               <Typography
                 sx={{
                   fontFamily: "inherit",
-                  fontSize: {
-                    fontWeight: "500",
-                    fontSize: { xs: "1rem", md: "1.5rem" },
-                  },
+                  fontWeight: "500",
+                  fontSize: { xs: "1rem", md: "1.5rem" },
                 }}
               >
                 All orders: {bookingLists.length}
               </Typography>
             </Stack>
             <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 700 }} aria-label="customized table">
+              <Table sx={{ minWidth: 800 }} aria-label="customized table">
                 <TableHead>
                   <TableRow>
                     {["#", "Name", "Date in", "Date out", "Total price"].map(
@@ -178,7 +176,6 @@ export default function UserOrders() {
           </Box>
         </Container>
       )}
-
       <Footer />
     </>
   );
