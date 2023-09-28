@@ -85,7 +85,7 @@ export default function UserOrders() {
               sx={{
                 fontFamily: "inherit",
                 fontSize: {
-                  xs: "1.3rem",
+                  xs: "1.8rem",
                   md: "2rem",
                 },
                 fontWeight: "500",
