@@ -13,6 +13,7 @@ import { BsSearch } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
 import { setRooms } from "../redux/rooms-slice";
 import { setCategory } from "../redux/category-slice";
+import { removeUser } from "../redux/auth-slice";
 
 export default function HomePage() {
   const rooms = useSelector(({ roomsSlice }) => roomsSlice.rooms);
@@ -20,6 +21,14 @@ export default function HomePage() {
     ({ categorySlice }) => categorySlice.category
   );
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const tokenTimeout = setTimeout(() => {
+      localStorage.clear();
+      dispatch(removeUser());
+    }, 3 * 24 * 60 * 60 * 1000);
+    return () => clearTimeout(tokenTimeout);
+  }, []);
 
   const [cardItem, setCardItem] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -45,8 +54,6 @@ export default function HomePage() {
     };
 
     getData();
-
-   
   }, []);
 
   const filterData = () => {
