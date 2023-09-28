@@ -22,9 +22,12 @@ import LazyLoad from "react-lazy-load";
 import { RiMedalFill, RiStarSFill } from "react-icons/ri";
 import { HiArrowSmLeft } from "react-icons/hi";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 const OrderPage = () => {
-  const { slug, checkin, checkout, numberOfGuests } = useParams();
+  const auth = useSelector(({ authSlice }) => authSlice.user);
+
+  const { slug, checkin, checkout, numberOfGuests, price } = useParams();
   const [item, setItem] = useState("");
   const [count, setCount] = useState(1);
   const navigate = useNavigate();
@@ -52,10 +55,33 @@ const OrderPage = () => {
     getData();
   }, [slug]);
 
-  const submitPayment = (data) => {
-    toast.success("A message has been sent");
-    navigate("/");
-    reset();
+  const submitPayment = async (formData) => {
+    console.log(formData);
+
+    const body = {
+      date_in: checkin.split("=")[1],
+      date_out: checkout.split("=")[1],
+      guests: numberOfGuests.split("=")[1],
+      total_price: price.split("=")[1],
+      room: item.id,
+      user: {
+        first_name: auth.first_name,
+        last_name: auth.last_name,
+        phone_number: auth.phone_number,
+        email: auth.email,
+        birth_date: auth.birth_date,
+      },
+    };
+
+    const { data, success } = await DataFetching.bookingRoom(body, auth.access);
+    if (success) {
+      toast.success("A message has been sent");
+      navigate("/");
+      reset();
+    } else {
+      toast.error(data, { position: toast.POSITION.TOP_RIGHT });
+      return;
+    }
   };
 
   const handleCardNumberChange = (e) => {

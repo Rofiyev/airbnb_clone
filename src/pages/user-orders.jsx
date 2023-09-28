@@ -33,7 +33,7 @@ export default function UserOrders() {
           auth.access
         );
         if (success) {
-          setBookingLists(data);
+          setBookingLists(data.reverse());
           setIsLoading(!success);
         }
       }

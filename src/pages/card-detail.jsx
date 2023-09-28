@@ -66,6 +66,8 @@ export default function CardDetailPage() {
     getData();
   }, [id]);
 
+  console.log(item);
+
   useEffect(() => {
     let days = differenceInDays(
       new Date(date_out ? date_out : "2023-09-19"),
@@ -77,43 +79,16 @@ export default function CardDetailPage() {
   const submitData = async () => {
     if (auth) {
       if (date_in.length && date_out.length && count >= 1) {
-        const body = {
-          date_in,
-          date_out,
-          guests: parseInt(guestCount),
-          total_price: 0,
-          room: item.id,
-          user: {
-            first_name: auth.first_name,
-            last_name: auth.last_name,
-            phone_number: auth.phone_number,
-            email: auth.email,
-            birth_date: auth.birth_date,
-          },
-        };
-        const { data, success } = await DataFetching.bookingRoom(
-          body,
-          auth.access
+        navigate(
+          `/order/slug=${id}/checkin=${date_in}/checkout=${date_out}/numberOfGuests=${+guestCount}/price=${
+            count * item.price
+          }`
         );
-        if (success) {
-          navigate(
-            `/order/roomId=${id}/checkin=${date_in}/checkout=${date_out}/numberOfGuests=${+guestCount}`
-          );
-        } else {
-          toast.error(data, { position: toast.POSITION.TOP_RIGHT });
-          return;
-        }
       } else {
-        toast.error("Data entry is required!", {
+        toast.error("You must register first!", {
           position: toast.POSITION.TOP_RIGHT,
         });
-        return;
       }
-    } else {
-      toast.error("You must register first!", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      return;
     }
   };
 

@@ -15,7 +15,7 @@ function App() {
       <Route path="/:id" element={<CardDetailPage />} />
       <Route path="/user-profile" element={<UserProfile />} />
       <Route
-        path="/order/:slug/:checkin/:checkout/:numberOfGuests"
+        path="/order/:slug/:checkin/:checkout/:numberOfGuests/:price"
         element={<OrderPage />}
       />
       <Route path="/user-orders" element={<UserOrders />} />
