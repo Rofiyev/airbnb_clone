@@ -33,7 +33,9 @@ export default function UserOrders() {
           auth.access
         );
         if (success) {
-          setBookingLists(data.reverse());
+          console.log(data);
+          data.sort((a, b) => new Date(a.date_in) - new Date(b.date_in));
+          setBookingLists(data);
           setIsLoading(!success);
         }
       }

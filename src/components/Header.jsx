@@ -379,7 +379,7 @@ function Header({ children }) {
               variant="h6"
               align="center"
             >
-              Login account
+              Verify account
             </Typography>
             <Divider />
             <TextField
