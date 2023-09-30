@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import {
   Box,
+  Button,
   CircularProgress,
   Container,
   Stack,
@@ -19,6 +20,8 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useSelector } from "react-redux";
 import { DataFetching } from "../api";
+import { Link } from "react-router-dom";
+import { SlBasket } from "react-icons/sl";
 
 export default function UserOrders() {
   const auth = useSelector(({ authSlice }) => authSlice.user);
@@ -33,7 +36,6 @@ export default function UserOrders() {
           auth.access
         );
         if (success) {
-          console.log(data);
           data.sort((a, b) => new Date(a.date_in) - new Date(b.date_in));
           setBookingLists(data);
           setIsLoading(!success);
@@ -80,7 +82,7 @@ export default function UserOrders() {
         >
           <CircularProgress color="error" />
         </Stack>
-      ) : (
+      ) : bookingLists.length ? (
         <Container maxWidth={"lg"}>
           <Box sx={{ minHeight: "100vh", py: "60px" }}>
             <Typography
@@ -177,6 +179,42 @@ export default function UserOrders() {
             </TableContainer>
           </Box>
         </Container>
+      ) : (
+        <Stack
+          height={"70vh"}
+          direction={"row"}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          <Stack direction={"column"} justifyContent={"center"}>
+            <Box
+              width={"100%"}
+              display={"flex"}
+              justifyContent={"center"}
+              mb={"15px"}
+            >
+              <SlBasket fontSize={"5rem"} />
+            </Box>
+            <Typography variant="h3" fontFamily={"inherit"}>
+              No orders available
+            </Typography>
+            <Box
+              width={"100%"}
+              mt={"10px"}
+              display={"flex"}
+              justifyContent={"center"}
+            >
+              <Button variant="contained">
+                <Link
+                  style={{ textDecoration: "none", color: "white" }}
+                  to={"/"}
+                >
+                  Go to Home
+                </Link>
+              </Button>
+            </Box>
+          </Stack>
+        </Stack>
       )}
       <Footer />
     </>

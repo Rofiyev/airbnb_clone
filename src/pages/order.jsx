@@ -331,7 +331,7 @@ const OrderPage = () => {
                         borderBottomLeftRadius: "0px",
                       },
                     }}
-                    {...register("zipCode", { required: "Required" })}
+                    {...register("zipCode")}
                     error={errors.zipCode}
                   />
                 </Box>
